@@ -1,0 +1,15 @@
+package org.nodej.amqp.example;
+
+
+import org.springframework.scheduling.annotation.Scheduled;
+
+public class QueueTwoPriceProducer extends RandomPriceProducer {	
+	
+	@Scheduled(fixedRate=3000)
+	public void sendStockOne(){
+		Stock sk = produceStock("中联通",12367);
+		System.out.println("sending " + sk.getStockName()+" "+sk.getStockNo());		
+		getRabbitTemplate().convertAndSend(sk);
+	}
+
+}

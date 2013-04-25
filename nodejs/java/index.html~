@@ -1,0 +1,35 @@
+<!DOCTYPE HTML PUBLIC "-//W3C//DTD HTML 4.01 Transitional//EN" "http://www.w3.org/TR/html4/loose.dtd">
+<html>
+<head>
+<meta http-equiv="Content-Type" content="text/html; charset=utf-8">
+<title>Socket.IO example application</title>
+<script src="/socket.io/socket.io.js"></script>
+<script>
+var socket = io.connect('http://localhost:3000');
+
+socket.on('data-update', function(dataList){
+    var table = document.getElementById("content-table");
+    var tbtext =""; 
+    for(data in dataList){
+        var rowdata = '<td>'+data.stockNo+"</td><td>"+ data.stockName+"</td><td>" + data.buyInPrice+ "</td><td>"+ data.sellOutPrice+"</td><td>"+ data.totalCount+"</td>
+        var row = '<tr id="stock_"'+data.stockNo+'>'+rowdata+'</tr>";
+ 
+       if(document.getElementById("stock_"+data.stockNo)) {
+          document.getElementById("stock_"+data.stockNo).innerHTML = rowdata;
+       }else{
+         tbtext = tbtext + row;        
+       }
+     }
+    
+   table.appendChild(tbtext);
+});
+</script>
+</head>
+<body>
+    <h3>server content:</h3>
+   <div id="server-content" style="height:200px;width:300px;color:skyblue">
+        <table id="content-table"><tr><th>序号</th><th>名称</th><th>买入价</th><th>卖出价</th><th>总量</th></tr></table>
+   </div>
+</body>
+</html>
+

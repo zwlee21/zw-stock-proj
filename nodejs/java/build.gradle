@@ -1,0 +1,43 @@
+apply plugin: 'java'
+apply plugin: 'eclipse'
+apply plugin:'application'
+
+repositories{
+  maven {
+      url "http://repo1.maven.org/maven2"
+      artifactUrls "http://repository.jboss.org/nexus/content/groups/public-jboss/" 
+      artifactUrls "http://dist.wso2.org/maven2/" 
+      artifactUrls  "https://services.rods.pitt.edu/nexus/content/repositories/thirdparty/"
+
+ }
+  maven {
+    url "http://maven.springframework.org/milestone"
+    artifactUrls "http://repository.jboss.org/nexus/content/groups/public-jboss/"  
+    artifactUrls "http://dist.wso2.org/maven2/" 
+    artifactUrls  "https://services.rods.pitt.edu/nexus/content/repositories/thirdparty/"
+}
+}
+
+dependencies{
+  testCompile 'junit:junit:4.7' 
+  compile 'org.springframework:spring-core:3.0.3.RELEASE'
+  compile 'org.springframework.amqp:spring-amqp:1.0.0.M1'
+  compile 'com.rabbitmq:amqp-client:1.8.1'
+  compile 'org.springframework.amqp:spring-rabbit:1.0.0.M1'
+  compile 'org.springframework.amqp:spring-rabbit-admin:1.0.0.M1'
+  compile 'com.google.collections:google-collections:1.0'
+  runtime 'cglib:cglib-nodep:2.2'
+}
+
+mainClassName = "org.nodej.amqp.example.RandomPriceRunner"
+
+task compl(dependsOn: build) <<{
+  ant.java(classname: 'org.nodej.amqp.example.RandomPriceRunner', fork: true,
+    classpath: "${sourceSets.main.runtimeClasspath.asPath}")
+  
+}
+
+task runConsumer(dependsOn: build) <<{
+  ant.java(classname: 'org.nodej.amqp.example..StockProducer', fork:true ,
+    classpath: "${sourceSets.main.runtimeClasspath.asPath}")
+}

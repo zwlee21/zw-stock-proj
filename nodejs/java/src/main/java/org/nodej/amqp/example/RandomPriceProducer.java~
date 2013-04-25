@@ -1,0 +1,52 @@
+package org.nodej.amqp.example;
+
+import java.text.DecimalFormat;
+import java.text.NumberFormat;
+
+import org.springframework.amqp.rabbit.core.RabbitTemplate;
+
+public abstract class RandomPriceProducer {
+    private RabbitTemplate rabbitTemplate;
+    
+	public void setRabbitTemplate(RabbitTemplate rabbitTemplate) {
+		this.rabbitTemplate = rabbitTemplate;
+	}	
+	
+	public RabbitTemplate getRabbitTemplate() {
+		return this.rabbitTemplate;
+	}	
+	
+	public void setQueueName(String name){
+		this.rabbitTemplate.setQueue(name);
+		
+	}
+        public void setRoutingKey(String name){		
+                this.rabbitTemplate.setRoutingKey(name);		
+	}
+	
+	private String getBuyPrice(double random) {
+		NumberFormat formatter = new DecimalFormat("#0.00");
+		return formatter.format(random * 100);
+	}
+
+        private String getSellPrice(double random) {
+		NumberFormat formatter = new DecimalFormat("#0.00");
+		return formatter.format(random * 100);
+	}
+
+        private String getTotalCount(double random) {
+		NumberFormat formatter = new DecimalFormat("#0");
+		return formatter.format(random * 100000);
+	}
+        
+     public Stock produceStock(String name,Integer stockNo){
+    	   Stock sk = new Stock();
+    	   sk.setStockName(name);
+    	   sk.setStockNo(stockNo);
+    	   sk.setBuyInPrice(getBuyPrice(Math.random()));
+    	   sk.setSellOutPrice(getSellPrice(Math.random()));
+    	   sk.setTotalCount(getTotalCount(Math.random())); 
+    	   return sk;
+    	   
+       }
+}
