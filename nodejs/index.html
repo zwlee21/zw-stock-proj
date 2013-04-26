@@ -6,7 +6,7 @@
 <script src="/socket.io/socket.io.js"></script>
 <script>
   window.onload = function(){
-  var socket = io.connect('http://localhost:5588');
+  var socket = io.connect('/');
   var contentEl = document.getElementById("server-content");
   var firstLoad =true,tableEl;
   socket.on('data-update', function(data){
